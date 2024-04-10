@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Moment 1.2</title>
+    <script src="src/js/main.js" type="module"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <h1>Moment 2</h1>
+    <h2>Att göra lista</h2>
+    <div id="form">
+    <form id="courseForm">
+        <label for="task">Att göra:</label><br>
+        <input type="text" id="task" required>
+        <br>
+        <label for="priority">Prioritering:</label><br>
+        <select id="priority" required>
+        <option value>Välj en prioritet...</option> 
+        <option value="1">Hög</option>
+        <option value="2">Mellan</option>
+        <option value="3">Låg</option> </select> <br>
+        <br>
+        <button type="submit" id="spara">Lägg till Todo</button><br>
+        <button type="reset" id="reset">Rensa formulär</button>
+    </form>
+    <div id="todoList"></div>
+    <div id="courseDetails"></div>
+</div>
+</body>
+</html>
