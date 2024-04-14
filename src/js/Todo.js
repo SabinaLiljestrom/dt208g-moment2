@@ -3,13 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoList = void 0;
 /*Implementerar det skapade interfacet*/
 var TodoList = /** @class */ (function () {
-    /*constructor som initierar todos-array och ladar från local storage*/
+    /*constructor som initierar todos-array och laddar från local storage*/
     function TodoList(task, priority) {
         this.task = task;
         this.completed = false;
         this.priority = priority;
         this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
     }
+    TodoList.prototype.validateInput = function (task, priority) {
+        if (task.trim() === "" || !(priority === 1 || priority === 2 || priority === 3)) {
+            return false;
+        }
+        return true;
+    };
     /*Metod för att lägga till nya todos med prioritet */
     TodoList.prototype.addTodo = function (task, priority) {
         if (task != "" && (priority == 1 || priority == 2 || priority == 3)) {

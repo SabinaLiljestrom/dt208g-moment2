@@ -8,17 +8,25 @@ function printTodoDetails(todo) {
     var todoListDiv = document.getElementById("todoList");
     if (todoListDiv) {
         var newTodoDiv = document.createElement("div");
-        newTodoDiv.innerHTML = "\n        <p><span id=\"taskSpan\" contenteditable=\"true\" data-key=\"task\">".concat(todo.task, "</span></p>\n        <p>Prioritet: <span id=\"prioritySpan\" contenteditable=\"true\" data-key=\"priority\">").concat(todo.priority, "</span></p>\n        <button id=\"completedButton\" ").concat(todo.completed ? 'style="text-decoration: line-through;"' : '', " ").concat(todo.completed ? 'disabled' : '', ">Markera som klar</button>\n        ");
+        newTodoDiv.innerHTML = "\n        <p><span id=\"taskSpan\" contenteditable=\"true\" data-key=\"task\">".concat(todo.task, "</span></p>\n        <button id=\"completedButton\" ").concat(todo.completed ? 'style="text-decoration: line-through;"' : '', " ").concat(todo.completed ? 'disabled' : '', ">Markera som klar</button>\n        ");
         todoListDiv.appendChild(newTodoDiv);
     }
 }
 //hämta DOM-element för formulär och todo detaljer
 var todoForm = document.getElementById("todoForm");
 var todos = JSON.parse(localStorage.getItem("todos") || "[]");
-//skriva ut todo detaljer för varje sparade todo från local storage när sidan laddas om
-todos.forEach(function (todo) {
-    printTodoDetails(todo);
-});
+// sortera efter prioritet
+function displayAllTodos() {
+    var todoListDiv = document.getElementById("todoList");
+    if (todoListDiv) {
+        // Clear existing todos from the page
+        todoListDiv.innerHTML = '';
+        // Print all sorted todos on the page
+        todos.forEach(function (todo) {
+            printTodoDetails(todo);
+        });
+    }
+}
 //eventlyssnar på lägg till knappen
 todoForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -32,10 +40,11 @@ todoForm.addEventListener("submit", function (event) {
         completed: false,
     };
     todos.push(newTodo);
+    todos = todos.sort(function (a, b) { return a.priority - b.priority; }); // Sort todos by priority
     localStorage.setItem("todos", JSON.stringify(todos));
-    printTodoDetails(newTodo);
-    taskInput.value = ''; // Rensar input efter att man lagt till 
-    priorityInput.value = ''; // Rensar prioritet
+    displayAllTodos(); // Re-display all todos on the page
+    taskInput.value = '';
+    priorityInput.value = '';
 });
 //eventlyssnare klar knapp, texten strycks över när den är gjord
 document.addEventListener('click', function (event) {
@@ -48,3 +57,4 @@ document.addEventListener('click', function (event) {
         event.target.disabled = true;
     }
 });
+displayAllTodos();

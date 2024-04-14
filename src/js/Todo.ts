@@ -5,14 +5,19 @@ export class TodoList implements ITodo {
     completed: boolean; 
     priority: number; 
     todos: ITodo[];
-/*constructor som initierar todos-array och ladar från local storage*/
+/*constructor som initierar todos-array och laddar från local storage*/
     constructor(task: string, priority: number) {
         this.task = task;
         this.completed = false;
         this.priority = priority;
         this.todos = JSON.parse(localStorage.getItem('todos')|| '[]');
     }
-
+    validateInput(task: string, priority: number): boolean {
+        if (task.trim() === "" || !(priority === 1 || priority === 2 || priority === 3)) {
+            return false;
+        }
+        return true;
+    }
 /*Metod för att lägga till nya todos med prioritet */
 addTodo (task: string, priority: number): void {
     if (task != "" && (priority ==1 || priority ==2 || priority==3 )) {

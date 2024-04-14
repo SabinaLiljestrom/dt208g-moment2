@@ -11,7 +11,6 @@ function printTodoDetails(todo: ITodo): void {
         const newTodoDiv = document.createElement("div");
         newTodoDiv.innerHTML = `
         <p><span id="taskSpan" contenteditable="true" data-key="task">${todo.task}</span></p>
-        <p>Prioritet: <span id="prioritySpan" contenteditable="true" data-key="priority">${todo.priority}</span></p>
         <button id="completedButton" ${todo.completed ? 'style="text-decoration: line-through;"' : ''} ${todo.completed ? 'disabled' : ''}>Markera som klar</button>
         `;
         todoListDiv.appendChild(newTodoDiv);
@@ -20,10 +19,18 @@ function printTodoDetails(todo: ITodo): void {
 //hämta DOM-element för formulär och todo detaljer
 const todoForm = document.getElementById("todoForm") as HTMLFormElement;
 let todos: ITodo[] = JSON.parse(localStorage.getItem("todos") || "[]");
-//skriva ut todo detaljer för varje sparade todo från local storage när sidan laddas om
-todos.forEach(todo => {
-    printTodoDetails(todo);
-});
+// sortera efter prioritet
+function displayAllTodos(): void {
+  const todoListDiv = document.getElementById("todoList");
+    if (todoListDiv) {
+        // Rensar befintliga todos från sidan
+        todoListDiv.innerHTML = '';
+        // SKriver ut sorterad lista
+        todos.forEach(todo => {
+            printTodoDetails(todo);
+        });
+    }
+  }
 
 //eventlyssnar på lägg till knappen
 todoForm.addEventListener("submit", (event) => {
@@ -38,13 +45,13 @@ todoForm.addEventListener("submit", (event) => {
         completed: false, 
     };
 
-    todos.push(newTodo);
-    localStorage.setItem("todos", JSON.stringify(todos));
-    printTodoDetails(newTodo);
-
-    taskInput.value = ''; // Rensar input efter att man lagt till 
-    priorityInput.value = ''; // Rensar prioritet
-});
+  todos.push(newTodo);
+  todos = todos.sort((a, b) => a.priority - b.priority); // Sorterar todos på sidan
+  localStorage.setItem("todos", JSON.stringify(todos));
+  displayAllTodos(); // Skriver ut nya sorterade listan 
+  taskInput.value = '';
+  priorityInput.value = '';
+  });
 //eventlyssnare klar knapp, texten strycks över när den är gjord
 document.addEventListener('click', (event) => {
     if (event.target && (event.target as HTMLElement).id === 'completedButton') {
@@ -55,3 +62,4 @@ document.addEventListener('click', (event) => {
         (event.target as HTMLButtonElement).disabled = true;
     }
 });
+displayAllTodos();
