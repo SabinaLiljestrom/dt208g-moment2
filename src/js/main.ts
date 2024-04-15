@@ -3,7 +3,7 @@ import { ITodo } from './ITodo';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM is fully loaded and parsed');
 });
-//funktion skriva ut todo på sidan //
+//funktion skriva ut todo på sidan
 function printTodoDetails(todo: ITodo): void {
     const todoListDiv = document.getElementById("todoList");
 
@@ -63,3 +63,21 @@ document.addEventListener('click', (event) => {
     }
 });
 displayAllTodos();
+// Händelsehanterar när man ändrar info i en kurs så ändras det bara i just den kursen och updaterar local storage
+document.body.addEventListener("input", (event) => {
+    const target = event.target as HTMLElement;
+    if (target && target.getAttribute("contenteditable") === "true") {
+        const key = target.getAttribute("data-key");
+        const value = target.textContent || "";
+        const todoTask = target.closest("div")?.querySelector("#taskSpan")?.textContent;
+        if (todoTask) {
+            todos = todos.map(todo => {
+                if (todo.task === todoTask) {
+                    return { ...todo, [key]: value };
+                }
+                return todo;
+            });
+            localStorage.setItem("todos", JSON.stringify(todos)); 
+        }
+    }
+});
