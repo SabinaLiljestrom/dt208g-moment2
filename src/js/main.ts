@@ -3,6 +3,7 @@ import { ITodo } from './ITodo';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM is fully loaded and parsed');
 });
+
 //funktion skriva ut todo på sidan
 function printTodoDetails(todo: ITodo): void {
     const todoListDiv = document.getElementById("todoList");

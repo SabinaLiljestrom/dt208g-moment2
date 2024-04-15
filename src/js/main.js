@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM is fully loaded and parsed');
 });
-//funktion skriva ut todo på sidan //
+//funktion skriva ut todo på sidan
 function printTodoDetails(todo) {
     var todoListDiv = document.getElementById("todoList");
     if (todoListDiv) {
